@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <span id="botEmoji" class="emoji"></span>
+        <div>
+          <h1 id="botName"></h1>
+          <p id="botTagline"></p>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="newChatBtn" type="button">New chat</button>
+        <button id="keyBtn" type="button">API key</button>
+      </div>
+    </header>
+
+    <main id="messages" aria-live="polite"></main>
+
+    <div id="starters" class="starters"></div>
+
+    <form id="chatForm" class="composer">
+      <textarea id="input" rows="1" placeholder="Écris ton message ici..."></textarea>
+      <button id="sendBtn" type="submit">Send</button>
+    </form>
+  </div>
+
+  <dialog id="keyDialog">
+    <h2>Your Gemini API key</h2>
+    <p>Paste your key below. Get a free one at
+      <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.
+      It is never saved in the website's code.</p>
+    <input id="keyInput" type="password" placeholder="Paste key here" autocomplete="off">
+    <label class="remember">
+      <input id="rememberBox" type="checkbox"> Remember on this device
+    </label>
+    <div class="dialog-buttons">
+      <button id="clearKeyBtn" type="button">Remove key</button>
+      <button id="cancelKeyBtn" type="button">Cancel</button>
+      <button id="saveKeyBtn" type="button" class="primary">Save</button>
+    </div>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
