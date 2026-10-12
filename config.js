@@ -33,14 +33,14 @@ Rules:
 
   // Buttons shown before the first message
   starterQuestions: [
-    "Can I practice ordering a coffee at a cafe?",
-    "Can I practice ordering at a restaurant in Paris?",
-    "How should I invite a friend to hang out for lunch?",
+    "Can I practice ordering at a cafe?",
+    "Can I practice catching up with a friend?",
+    "Can I practice inviting someone to hang out for lunch?",
   ],
 
   // Which Gemini model to use. If you get a "model not found" error, change this.
   model: "gemini-flash-latest",
 
   // Main color of the page (a hex color code)
-  themeColor: "#90D5FF",
+  themeColor: "#9dcdeb",
 };
