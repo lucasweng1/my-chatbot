@@ -21,6 +21,20 @@
   $("botTagline").textContent = C.tagline;
   document.documentElement.style.setProperty("--accent", C.themeColor);
 
+  // ---------- Character limit ----------
+  const MAX = C.maxMessageLength || 500;
+  input.maxLength = MAX; // stops typing and pasting past the limit
+  const counter = document.createElement("div");
+  counter.style.cssText = "font-size:0.75rem;text-align:right;padding:0 16px;color:var(--muted);visibility:hidden;";
+  form.parentNode.insertBefore(counter, form);
+  function updateCounter() {
+    const n = input.value.length;
+    counter.textContent = n + " / " + MAX;
+    counter.style.visibility = n > 0 ? "visible" : "hidden";
+    counter.style.color = n >= MAX ? "var(--error-text)" : "var(--muted)";
+    counter.style.fontWeight = n >= MAX ? "600" : "normal";
+  }
+
   // ---------- API key storage (always wrapped in try/catch) ----------
   function getKey() {
     try { const k = sessionStorage.getItem("bot_api_key"); if (k) return k; } catch (e) {}
@@ -109,6 +123,11 @@
     text = text.trim();
     if (!text || busy) return;
 
+    if (text.length > MAX) {
+      addMessage("bot", "Your message is too long. Please keep it under " + MAX + " characters.", true);
+      return;
+    }
+
     const key = getKey();
     if (!key) {
       addMessage("bot", "Please add your API key first (top right), then send your message again.", true);
@@ -120,6 +139,7 @@
     addMessage("user", text);
     input.value = "";
     resizeInput();
+    updateCounter();
     history.push({ role: "user", parts: [{ text }] });
 
     busy = true;
@@ -182,7 +202,7 @@
     input.style.height = "auto";
     input.style.height = Math.min(input.scrollHeight, 140) + "px";
   }
-  input.addEventListener("input", resizeInput);
+  input.addEventListener("input", () => { resizeInput(); updateCounter(); });
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
       e.preventDefault();
@@ -195,4 +215,5 @@
   });
 
   newChat();
+})();
 })();
