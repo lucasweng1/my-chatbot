@@ -46,4 +46,35 @@ Rules:
 
   // Main color of the page (a hex color code)
   themeColor: "#90D5FF",
+
+  // ------------------------------------------------------------
+  //  YOUR NOTES (knowledge file)
+  // ------------------------------------------------------------
+
+  // true = the bot looks things up in your notes file before answering.
+  // false = the bot works exactly like before, without notes.
+  useKnowledge: true,
+
+  // The name of your notes file. It must sit next to index.html.
+  knowledgeFile: "knowledge.md",
+
+  // How the bot finds the right notes:
+  //   "meaning"  = finds notes with a similar meaning (smarter, uses your API key)
+  //   "keywords" = finds notes that share words with the question (simple, no extra requests)
+  // If "meaning" fails, the bot switches to "keywords" by itself.
+  searchMethod: "meaning",
+
+  // How many notes to send along with each question (3 is a good start).
+  topK: 3,
+
+  // The Gemini model that turns notes into numbers for "meaning" search.
+  embeddingModel: "gemini-embedding-2",
+
+  // Extra rules added to the bot's instructions whenever notes are used.
+  knowledgeRules: `
+You will receive NOTES from my knowledge file along with each question.
+If the notes answer the question, base your answer on them and cite the note numbers like [1].
+If they don't, begin with 'I couldn't find that in my notes.'
+Never invent facts, dates, rules or policies that are not in the notes.
+`,
 };
