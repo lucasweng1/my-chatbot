@@ -437,6 +437,45 @@
     }
   }
 
+  // ---------- Save the conversation as a text file ----------
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function saveChat() {
+    if (history.length === 0) {
+      addMessage("bot", "There's no conversation to save yet. Send a message first, then try again.", true);
+      return;
+    }
+    const now = new Date();
+    const dateStamp = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+    let out = C.name + " conversation\n";
+    out += "Saved: " + now.toLocaleString() + "\n";
+    out += "========================================\n\n";
+    history.forEach((turn) => {
+      const text = turn.parts.map((p) => p.text).join("");
+      if (turn.role === "user") {
+        out += "You:\n" + text + "\n\n";
+      } else {
+        out += C.name + ":\n" + text.replace(/\*\*(.+?)\*\*/g, "$1") + "\n\n";
+      }
+    });
+    const safeName = (C.name || "chat").replace(/[^A-Za-z0-9_-]+/g, "");
+    const fileName = (safeName || "chat") + "-chat-" + dateStamp + ".txt";
+    try {
+      // The invisible \uFEFF at the start helps Windows show accents correctly
+      const blob = new Blob(["\uFEFF" + out], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (e) {
+      addMessage("bot", "Sorry, I couldn't save the file in this browser.", true);
+    }
+  }
+  $("saveBtn").addEventListener("click", saveChat);
+
   // ---------- Starters and new chat ----------
   function showStarters() {
     startersEl.innerHTML = "";
